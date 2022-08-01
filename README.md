@@ -7,10 +7,14 @@
 
 # Use
 Either
+
 - Compile the library as a whole separately and use that
+
 or
+
 - Copy file(s) with needed functionality to your project
 
 # License
 Currently auxilib uses MIT license.
+
 You're free to do anything you want, just don't forget to include a notice !
