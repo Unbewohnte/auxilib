@@ -12,18 +12,14 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 #include <stdint.h>
 
-uint32_t xorshift32(uint32_t seed) {
-    seed ^= seed << 13;
-    seed ^= seed >> 17;
-    seed ^= seed << 5;
+// Determine this machine's endianness. Returns 0 in case it is of Big-Endian type, 1 - Little-Endian
+int endianness();
 
-    return seed;
-}
+// Swaps 16bit integer's endianness
+uint16_t swap_endian16(uint16_t num);
 
-uint64_t xorshift64(uint64_t seed) {
-    seed ^= seed << 13;
-    seed ^= seed >> 7;
-    seed ^= seed << 17;
+// Swaps 32bit integer's endianness
+uint32_t swap_endian32(uint32_t num);
 
-    return seed;
-}
+// Swaps 64bit integer's endianness
+uint64_t swap_endian64(uint64_t num);

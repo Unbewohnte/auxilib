@@ -17,13 +17,9 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include <stdint.h>
 #include <stddef.h>
 
-#include "../src/rng/lcg.c"
-#include "../src/rng/xorshift.c"
-#include "../src/rng/bbs.c"
-
-#include "../src/img/ppm.c"
-
-#include "../src/endian/endian.c"
+#include "../src/rng/rng.h"
+#include "../src/img/ppm.h"
+#include "../src/endian/endian.h"
 
 int test_rng() {
     lcg(76);

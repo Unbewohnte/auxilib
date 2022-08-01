@@ -12,7 +12,7 @@ Either
 
 or
 
-- Copy file(s) with needed functionality to your project
+- Copy header(s) with implementation file(s) with needed functionality to your project
 
 # License
 Currently auxilib uses MIT license.

@@ -12,6 +12,14 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 #include <stdint.h>
 
-int64_t bbs(int64_t seed) {
-    return seed * seed % (2503 * 3571); 
-}
+// Implementation of BBS RNG with pre-defined variables
+int64_t bbs(int64_t seed);
+
+// Implementation of LCG RNG with pre-defined variables
+int64_t lcg(int64_t seed);
+
+// Implementation of XORshift RNG for 32bit integers
+uint32_t xorshift32(uint32_t seed);
+
+// Implementation of XORshift RNG for 64bit integers
+uint64_t xorshift64(uint64_t seed);

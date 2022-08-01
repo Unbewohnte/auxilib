@@ -10,24 +10,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdint.h>
-
-typedef struct rgb8 {
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
-} rgb8;
-
-// minimal ppm image structure
-typedef struct ppm_image {
-    unsigned int width;
-    unsigned int height;
-    rgb8* pixels;
-} ppm_image;
+#include "ppm.h"
 
 // Read ppm image from file on the disk. Returns NULL if something went wrong
 ppm_image* read_ppm(const char* path) {

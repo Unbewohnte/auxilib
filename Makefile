@@ -1,7 +1,7 @@
 CC=gcc
 DEFAULTCFLAGS=-Wall -Werror -O2
 SRCDIR=src
-LIBNAME=auxlib
+LIBNAME=auxlib.a
 BUILDDIR=build
 BINDIR=bin
 TESTDIR=testing
@@ -14,14 +14,20 @@ lib:
 	mv *.o $(BUILDDIR)
 
 	mkdir -p $(BINDIR)
-	ar rcs $(BINDIR)/$(LIBNAME).a $(BUILDDIR)/*.o
+	ar rcs $(BINDIR)/$(LIBNAME) $(BUILDDIR)/*.o
 
 
 test:
-	$(CC) $(DEFAULTCFLAGS) $(TESTDIR)/*.c -o $(TESTDIR)/$(TESTBIN) && \
+	$(CC) $(DEFAULTCFLAGS) $(TESTDIR)/$(TESTBIN).c $(SRCDIR)/*/*.c -o $(TESTDIR)/$(TESTBIN) && \
 	 	cd $(TESTDIR) && \
 	 	./$(TESTBIN) && \
 	 	rm $(TESTBIN)
+
+test_static: lib
+	$(CC) $(DEFAULTCFLAGS) $(TESTDIR)/$(TESTBIN).c $(BINDIR)/$(LIBNAME) -static -o $(TESTDIR)/$(TESTBIN) && \
+	cd $(TESTDIR) && \
+	./$(TESTBIN) && \
+	rm $(TESTBIN)
 
 clear:
 	rm -rf $(BUILDDIR) $(BINDIR) $(TESTDIR)/$(TESTBIN)
