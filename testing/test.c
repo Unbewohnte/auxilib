@@ -143,4 +143,6 @@ int main() {
     } else {
         printf("[INFO] Endian test passed\n\n");
     }
+
+    return EXIT_SUCCESS;
 }

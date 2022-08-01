@@ -18,7 +18,10 @@ lib:
 
 
 test:
-	$(CC) $(DEFAULTCFLAGS) $(TESTDIR)/*.c -o $(TESTDIR)/$(TESTBIN) && cd $(TESTDIR) && ./$(TESTBIN)
+	$(CC) $(DEFAULTCFLAGS) $(TESTDIR)/*.c -o $(TESTDIR)/$(TESTBIN) && \
+	 	cd $(TESTDIR) && \
+	 	./$(TESTBIN) && \
+	 	rm $(TESTBIN)
 
 clear:
-	rm -rf $(BUILDDIR) $(BINDIR)
+	rm -rf $(BUILDDIR) $(BINDIR) $(TESTDIR)/$(TESTBIN)
