@@ -12,6 +12,19 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 #include <stdint.h>
 
+// Determine this machine's endianness. Returns 0 in case it is of Big-Endian type, 1 - Little-Endian
+int endianness() {
+    // 00000000 00000001
+    int16_t n = 1;
+    if (*(uint8_t*) &n == 1) {
+        // 00000001
+        return 1;
+    } else {
+        // 00000000
+        return 0;
+    }
+}
+
 uint16_t swap_endian16(uint16_t num) {
     return (uint16_t) 
     (

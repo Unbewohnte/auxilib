@@ -75,6 +75,12 @@ int test_img() {
 }
 
 int test_endian() {
+    if (endianness() == 0) {
+        printf("[INFO] This machine is determined to be of Big-Endian type; Test's failed if that's not the case\n");
+    } else {
+        printf("[INFO] This machine is determined to be of Little-Endian type; Test's failed if that's not the case\n");
+    }
+
     // 01100001 10101000
     const uint16_t test_num16 = 25000;
     // 10101000 01100001
