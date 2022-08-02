@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/rng/rng.h"
 #include "../src/img/ppm.h"
 #include "../src/endian/endian.h"
+#include "../src/fs/fs.h"
 
 int test_rng() {
     lcg(76);
@@ -81,6 +82,7 @@ int test_endian() {
     const uint16_t test_num16 = 25000;
     // 10101000 01100001
     const uint16_t test_num16_swapped = 43105;
+    
     if (swap_endian16(test_num16) != test_num16_swapped) {
         printf("[INFO] Failed to swap endianness for 16bit integer: %u -> %u; supposed to get %u\n",
             test_num16, swap_endian16(test_num16), test_num16_swapped
@@ -92,6 +94,7 @@ int test_endian() {
     const uint32_t test_num32 = 7270133;
     // 11110101 11101110 01101110 00000000
     const uint32_t test_num32_swapped = 4126043648;
+
     if ((swap_endian32(test_num32)) != test_num32_swapped) {
         printf("[INFO] Failed to swap endianness for 32bit integer: %u -> %u; supposed to get %u\n",
             test_num32, swap_endian32(test_num32), test_num32_swapped
@@ -109,6 +112,20 @@ int test_endian() {
         printf("[INFO] Failed to swap endianness for 64bit integer: %lu -> %lu; supposed to get %lu\n",
             test_num64, swap_endian64(test_num64), test_num64_swapped
         );
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+int test_fs() {
+    if (file_size("test_img512x512.ppm") == UINT64_MAX) {
+        printf("[INFO] Failed to determine file size of test ppm image");
+        return EXIT_FAILURE;
+    }
+
+    if (copy_file("test_img512x512.ppm", "copied_ppm_file.ppm") == EXIT_FAILURE) {
+        printf("[INFO] Failed to copy test ppm image\n");
         return EXIT_FAILURE;
     }
 
@@ -138,6 +155,14 @@ int main() {
         printf("[INFO] Endian test failed\n\n");
     } else {
         printf("[INFO] Endian test passed\n\n");
+    }
+
+    // fs
+    printf("[INFO] Testing fs...\n");
+    if (test_fs() == EXIT_FAILURE) {
+        printf("[INFO] FS test failed\n\n");
+    } else {
+        printf("[INFO] FS test passed\n\n");
     }
 
     return EXIT_SUCCESS;
