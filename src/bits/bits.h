@@ -10,12 +10,16 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <stdio.h>
 #include <stdint.h>
-#include <stdlib.h>
 
-// Get file size. returns 18446744073709551615 (uint64_t maximum value) if something went wrong
-uint64_t file_size(char* path);
+// Returns 1 if position bit in byte is 1, 0 if 0; -1 is returned in case position is not in range [1..8].
+// Position is counted from the least significant bit, ie: in 10010010 position 1 is "0", but position 8 is "1" 
+int8_t get_byte_bit(uint8_t byte, uint8_t position);
 
-// Copy file at path_src to path_dst. Does not create nonexistent directories. Returns -1 in case of an error and 0 if the operation was sucessfull
-int copy_file(char* path_src, char* path_dst);
+// Sets position bit in byte to 1. Does nothing if position is not in range [1..8] or if the bit is already 1.
+// Position is counted from the least significant bit, ie: in 10010010 position 1 is "0", but position 8 is "1"
+void set_byte_bit(uint8_t* byte, uint8_t position);
+
+// Sets position bit in byte to 0. Does nothing if position is not in range [1..8] or if the bit is already 0.
+// Position is counted from the least significant bit, ie: in 10010010 position 1 is "0", but position 8 is "1" 
+void unset_byte_bit(uint8_t* byte, uint8_t position);

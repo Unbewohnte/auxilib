@@ -31,7 +31,7 @@ uint64_t file_size(char* path) {
     return file_size;
 }
 
-// Copy file at path_src to path_dst. Does not create nonexistent directories. Returns EXIT_FAILURE in case of an error
+// Copy file at path_src to path_dst. Does not create nonexistent directories. Returns -1 in case of an error and 0 if the operation was sucessfull
 int copy_file(char* path_src, char* path_dst) {
     FILE* src_file;
     FILE* dst_file;
@@ -41,12 +41,12 @@ int copy_file(char* path_src, char* path_dst) {
 
     src_file = fopen(path_src, "rb");
     if (!src_file) {
-        return EXIT_FAILURE;
+        return -1;
     }
 
     dst_file = fopen(path_dst, "wb");
     if (!dst_file) {
-        return EXIT_FAILURE;
+        return -1;
     }
 
     while (!feof(src_file)) {
@@ -57,5 +57,5 @@ int copy_file(char* path_src, char* path_dst) {
     fclose(src_file);
     fclose(dst_file);
 
-    return EXIT_SUCCESS;
+    return 0;
 }

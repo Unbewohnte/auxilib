@@ -21,6 +21,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/img/ppm.h"
 #include "../src/endian/endian.h"
 #include "../src/fs/fs.h"
+#include "../src/bits/bits.h"
 
 int test_rng() {
     lcg(76);
@@ -84,7 +85,7 @@ int test_endian() {
     const uint16_t test_num16_swapped = 43105;
     
     if (swap_endian16(test_num16) != test_num16_swapped) {
-        printf("[INFO] Failed to swap endianness for 16bit integer: %u -> %u; supposed to get %u\n",
+        printf("[ERROR] Failed to swap endianness for 16bit integer: %u -> %u; supposed to get %u\n",
             test_num16, swap_endian16(test_num16), test_num16_swapped
         );
         return EXIT_FAILURE;
@@ -96,7 +97,7 @@ int test_endian() {
     const uint32_t test_num32_swapped = 4126043648;
 
     if ((swap_endian32(test_num32)) != test_num32_swapped) {
-        printf("[INFO] Failed to swap endianness for 32bit integer: %u -> %u; supposed to get %u\n",
+        printf("[ERROR] Failed to swap endianness for 32bit integer: %u -> %u; supposed to get %u\n",
             test_num32, swap_endian32(test_num32), test_num32_swapped
         );
         return EXIT_FAILURE;
@@ -109,7 +110,7 @@ int test_endian() {
     const uint64_t test_num64_swapped = 157878716858368;
 
     if (swap_endian64(test_num64) != test_num64_swapped) {
-        printf("[INFO] Failed to swap endianness for 64bit integer: %lu -> %lu; supposed to get %lu\n",
+        printf("[ERROR] Failed to swap endianness for 64bit integer: %lu -> %lu; supposed to get %lu\n",
             test_num64, swap_endian64(test_num64), test_num64_swapped
         );
         return EXIT_FAILURE;
@@ -120,12 +121,45 @@ int test_endian() {
 
 int test_fs() {
     if (file_size("test_img512x512.ppm") == UINT64_MAX) {
-        printf("[INFO] Failed to determine file size of test ppm image");
+        printf("[ERROR] Failed to determine file size of test ppm image");
         return EXIT_FAILURE;
     }
 
-    if (copy_file("test_img512x512.ppm", "copied_ppm_file.ppm") == EXIT_FAILURE) {
-        printf("[INFO] Failed to copy test ppm image\n");
+    if (copy_file("test_img512x512.ppm", "copied_ppm_file.ppm") == -1) {
+        printf("[ERROR] Failed to copy test ppm image\n");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+int test_bits() {
+    // 11001000
+    uint8_t test_byte = 200;
+    // 11001001
+    const uint8_t test_byte_first_bit_set = 201;
+    // 11001000
+    const uint8_t test_byte_first_bit_unset = 200;
+
+
+    if (get_byte_bit(test_byte, 1) != 0) {
+        printf(
+            "[ERROR] Failed to correctly determine the first bit in %d: supposed to get %d but got %d instead\n",
+             test_byte, 
+             get_byte_bit(test_byte, 1),
+             0);
+        return EXIT_FAILURE;
+    }
+
+    set_byte_bit(&test_byte, 1);
+    if (test_byte != test_byte_first_bit_set) {
+        printf("[ERROR] Failed to set the first bit to 1 in %d\n", test_byte);
+        return EXIT_FAILURE;
+    }
+
+    unset_byte_bit(&test_byte, 1);
+    if (test_byte != test_byte_first_bit_unset) {
+        printf("[ERROR] Failed to unset the first bit in %d\n", test_byte);
         return EXIT_FAILURE;
     }
 
@@ -163,6 +197,14 @@ int main() {
         printf("[INFO] FS test failed\n\n");
     } else {
         printf("[INFO] FS test passed\n\n");
+    }
+
+    // bits
+    printf("[INFO] Testing bits...\n");
+    if (test_bits() == EXIT_FAILURE) {
+        printf("[INFO] Bits test failed\n\n");
+    } else {
+        printf("[INFO] Bits test passed\n\n");
     }
 
     return EXIT_SUCCESS;
