@@ -14,21 +14,13 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 // Get file size. returns 18446744073709551615 (uint64_t maximum value) if something went wrong
 uint64_t file_size(char* path) {
-    FILE* file_stream;
-    uint64_t file_size;
+    struct stat file_stats;
 
-    file_stream = fopen(path, "rb");
-    if (!file_stream) {
+    if (stat(path , &file_stats) != 0) {
         return UINT64_MAX;
     }
 
-    fseek(file_stream, 0, SEEK_END);
-    file_size = ftell(file_stream);
-    fseek(file_stream, 0, SEEK_SET);
-
-    fclose(file_stream);
-
-    return file_size;
+    return (uint64_t) file_stats.st_size;
 }
 
 // Copy file at path_src to path_dst. Does not create nonexistent directories. Returns -1 in case of an error and 0 if the operation was sucessfull

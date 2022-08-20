@@ -121,7 +121,7 @@ int test_endian() {
 
 int test_fs() {
     if (file_size("test_img512x512.ppm") == UINT64_MAX) {
-        printf("[ERROR] Failed to determine file size of test ppm image");
+        printf("[ERROR] Failed to determine file size of test ppm image\n");
         return EXIT_FAILURE;
     }
 

@@ -13,6 +13,11 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <sys/stat.h>
+
+#if __WIN32__
+#define stat _stat64
+#endif
 
 // Get file size. returns 18446744073709551615 (uint64_t maximum value) if something went wrong
 uint64_t file_size(char* path);
