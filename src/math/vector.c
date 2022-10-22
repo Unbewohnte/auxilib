@@ -11,7 +11,6 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 */
 
 #include "vector.h"
-#include <math.h>
 
 // Calculate vector's length
 long double vec2_len(vec2 vec) {
@@ -99,4 +98,18 @@ long double vec3_angle(vec3 a, vec3 b) {
 // Get cosinus of angle between 2 given vectors
 long double vec3f_angle(vec3f a, vec3f b) {
     return vec3f_multiply_scalar(a, b) / (vec3f_len(a) * vec3f_len(b));
+}
+
+// | i    j    k   |
+// | a.x  a.y  a.z |
+// | b.x  b.y  b.z |
+
+// Get resulting vector of vector multiplication of 2 given vectors
+vec3 vec3_multiply_vector(vec3 a, vec3 b) {
+    return (vec3){a.y*b.z-(b.y*a.z), -(a.x*b.z-(b.x*a.z)), a.x*b.y-(b.x*a.y)};
+}
+
+// Get resulting vector of vector multiplication of 2 given vectors
+vec3f vec3f_multiply_vector(vec3f a, vec3f b) {
+    return (vec3f){a.y*b.z-(b.y*a.z), -(a.x*b.z-(b.x*a.z)), a.x*b.y-(b.x*a.y)};
 }

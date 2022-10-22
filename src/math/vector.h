@@ -81,3 +81,9 @@ long double vec3_angle(vec3 a, vec3 b);
 
 // Get cosinus of angle between 2 given vectors
 long double vec3f_angle(vec3f a, vec3f b);
+
+// Get resulting vector of vector multiplication of 2 given vectors
+vec3 vec3_multiply_vector(vec3 a, vec3 b);
+
+// Get resulting vector of vector multiplication of 2 given vectors
+vec3f vec3f_multiply_vector(vec3f a, vec3f b);
