@@ -196,6 +196,16 @@ int test_vector() {
         return EXIT_FAILURE;
     }
 
+    vec3 vec3d = (vec3){1, 2, 3};
+    vec3 vec3d_other = (vec3){-2, 0, 4};
+    vec3 vec3d_vector_multiplication = vec3_multiply_vector(vec3d, vec3d_other);
+    if (vec3d_vector_multiplication.x != 8 || vec3d_vector_multiplication.y != -10 || vec3d_vector_multiplication.z != 4) {
+        printf("[ERROR] Failed to calculate vector multiplication of 2 vectors: expected xyz %d %d %d; got xyz %lld %lld %lld",
+            8, -10, 4, vec3d_vector_multiplication.x, vec3d_vector_multiplication.y, vec3d_vector_multiplication.z
+        );
+        return EXIT_FAILURE;
+    }
+
     return EXIT_SUCCESS;
 }
 
