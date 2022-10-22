@@ -1,5 +1,5 @@
 CC=gcc
-DEFAULTCFLAGS=-Wall -Werror -O2
+DEFAULTCCFLAGS=-Wall -Werror -O2
 SRCDIR=src
 LIBNAME=auxlib.a
 BUILDDIR=build
@@ -8,7 +8,7 @@ TESTDIR=testing
 TESTBIN=test
 
 lib:
-	$(CC) $(DEFAULTCFLAGS) -c $(SRCDIR)/*/*.c
+	$(CC) $(DEFAULTCCFLAGS) -c $(SRCDIR)/*/*.c
 
 	mkdir -p $(BUILDDIR)
 	mv *.o $(BUILDDIR)
@@ -16,18 +16,17 @@ lib:
 	mkdir -p $(BINDIR)
 	ar rcs $(BINDIR)/$(LIBNAME) $(BUILDDIR)/*.o
 
-
 test:
-	$(CC) $(DEFAULTCFLAGS) $(TESTDIR)/$(TESTBIN).c $(SRCDIR)/*/*.c -o $(TESTDIR)/$(TESTBIN) && \
+	$(CC) $(DEFAULTCCFLAGS) $(TESTDIR)/$(TESTBIN).c $(SRCDIR)/*/*.c -o $(TESTDIR)/$(TESTBIN) -lm && \
 	 	cd $(TESTDIR) && \
 	 	./$(TESTBIN) && \
 	 	rm $(TESTBIN)
 
 test_static: lib
-	$(CC) $(DEFAULTCFLAGS) $(TESTDIR)/$(TESTBIN).c $(BINDIR)/$(LIBNAME) -static -o $(TESTDIR)/$(TESTBIN) && \
+	$(CC) $(DEFAULTCCFLAGS) $(TESTDIR)/$(TESTBIN).c $(BINDIR)/$(LIBNAME) -static -lm -o $(TESTDIR)/$(TESTBIN) && \
 	cd $(TESTDIR) && \
 	./$(TESTBIN) && \
 	rm $(TESTBIN)
 
-clear:
+clean:
 	rm -rf $(BUILDDIR) $(BINDIR) $(TESTDIR)/$(TESTBIN)

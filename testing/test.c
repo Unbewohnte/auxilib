@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/endian/endian.h"
 #include "../src/fs/fs.h"
 #include "../src/bits/bits.h"
+#include "../src/math/vector.h"
 
 int test_rng() {
     lcg(76);
@@ -166,6 +167,47 @@ int test_bits() {
     return EXIT_SUCCESS;
 }
 
+int test_vector() {
+    const long double threshold = 0.01;
+
+    vec2 vec2d = {2, 3};
+    vec2 vec2d_other = {3, 2};
+    long long int multiplied;
+
+    if (fabsl(vec2_len(vec2d) - 3.606f) > threshold) {
+        printf("[ERROR] Vector length calculation is wrong: expeted to be %f (+-%Lf); got %Lf\n",
+            3.606f, threshold, vec2_len(vec2d)
+        );
+        return EXIT_FAILURE;
+    }
+
+    multiplied = vec2_multiply_scalar(vec2d, vec2d_other);
+    if (multiplied != (vec2d.x*vec2d_other.x + vec2d.y*vec2d_other.y)) {
+        printf("[ERROR] Vector scalar multiplication is wrong\n");
+        return EXIT_FAILURE;
+    }
+
+    vec2d = (vec2){3, 4};
+    vec2d_other = (vec2){4, 3};
+    if (fabsl(vec2_angle(vec2d, vec2d_other) - 0.96f) > threshold) {
+        printf("[ERROR] Failed to calculate angle between 2 vectors: expected to be %f (+-%Lf); got %Lf\n",
+            0.96f, threshold, vec2_angle(vec2d, vec2d_other)
+        );
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+int test_math() {
+    if (test_vector() == EXIT_FAILURE) {
+        printf("[ERROR] Vector test failed\n");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
 int main() {
     // rng
     printf("[INFO] Testing rng...\n");
@@ -205,6 +247,14 @@ int main() {
         printf("[INFO] Bits test failed\n\n");
     } else {
         printf("[INFO] Bits test passed\n\n");
+    }
+
+    // math
+    printf("[INFO] Testing math...\n");
+    if (test_math() == EXIT_FAILURE) {
+        printf("[INFO] Math test failed\n\n");
+    } else {
+        printf("[INFO] Math test passed\n\n");
     }
 
     return EXIT_SUCCESS;
