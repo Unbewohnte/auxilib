@@ -1,7 +1,7 @@
 CC=gcc
 DEFAULTCCFLAGS=-Wall -Werror -O2
 SRCDIR=src
-LIBNAME=auxlib.a
+LIBNAME=auxilib.a
 BUILDDIR=build
 BINDIR=bin
 TESTDIR=testing
