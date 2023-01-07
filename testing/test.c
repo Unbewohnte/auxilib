@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <assert.h>
 #include <stdint.h>
@@ -23,6 +24,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/fs/fs.h"
 #include "../src/bits/bits.h"
 #include "../src/math/vector.h"
+#include "../src/datastruct/cvec.h"
 
 int test_rng() {
     lcg(76);
@@ -218,6 +220,53 @@ int test_math() {
     return EXIT_SUCCESS;
 }
 
+int test_cvec() {
+    cvec vec = cvec_new(sizeof(char), 12);
+    cvec_put(&vec, "3");
+    cvec_put(&vec, "2");
+    cvec_put(&vec, "6");
+    cvec_put(&vec, "9");
+
+    if (strncmp(vec.contents, "3269", 4) != 0) {
+       printf("[ERROR] Initial contents do not match: expected %s; got %s\n", "3269", vec.contents);
+       return EXIT_FAILURE; 
+    }
+
+    if (*cvec_at(&vec, 2) != '6') {
+        printf("[ERROR] Failed to get char at index %d: expected to get %d, but got %d\n", 2, '6', *cvec_at(&vec, 2));
+        return EXIT_FAILURE;
+    }
+
+    cvec_pop(&vec);
+    if (strncmp(vec.contents, "326", 3) != 0) {
+        printf("[ERROR] Failed to pop: expected the contents to be %s; got %s instead\n", "326", vec.contents);
+        return EXIT_FAILURE;
+    }
+
+    cvec_remove(&vec, 0);
+    if (strncmp(vec.contents, "26", 2) != 0) {
+        printf("[ERROR] Failed to remove element at index %d: expected contents to get: %s; got %s\n", 0, "26", vec.contents);
+        return EXIT_FAILURE;
+    }
+
+    cvec_free(&vec);
+    if (vec.contents != NULL) {
+        printf("[ERROR] Failed to free vector's contents\n");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+int test_datastruct() {
+    if (test_cvec() == EXIT_FAILURE) {
+        printf("[ERROR] CVEC test failed\n");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
 int main() {
     // rng
     printf("[INFO] Testing rng...\n");
@@ -265,6 +314,14 @@ int main() {
         printf("[INFO] Math test failed\n\n");
     } else {
         printf("[INFO] Math test passed\n\n");
+    }
+
+    // datastruct
+    printf("[INFO] Testing datastruct...\n");
+    if (test_datastruct() == EXIT_FAILURE) {
+        printf("[INFO] Datastruct test failed\n\n");
+    } else {
+        printf("[INFO] Datastruct test passed\n\n");
     }
 
     return EXIT_SUCCESS;
