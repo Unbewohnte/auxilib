@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright © 2022 Kasyanov Nikolay Alexeyevich (Unbewohnte)
+Copyright © 2022, 2023 Kasyanov Nikolay Alexeyevich (Unbewohnte)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/fs/fs.h"
 #include "../src/bits/bits.h"
 #include "../src/math/vector.h"
+#include "../src/math/misc.h"
 #include "../src/datastruct/cvec.h"
 
 int test_rng() {
@@ -176,7 +177,7 @@ int test_vector() {
     vec2 vec2d_other = {3, 2};
     long long int multiplied;
 
-    if (fabsl(vec2_len(vec2d) - 3.606f) > threshold) {
+    if (absld(vec2_len(vec2d) - 3.606f) > threshold) {
         printf("[ERROR] Vector length calculation is wrong: expeted to be %f (+-%Lf); got %Lf\n",
             3.606f, threshold, vec2_len(vec2d)
         );
@@ -191,7 +192,7 @@ int test_vector() {
 
     vec2d = (vec2){3, 4};
     vec2d_other = (vec2){4, 3};
-    if (fabsl(vec2_angle(vec2d, vec2d_other) - 0.96f) > threshold) {
+    if (absld(vec2_angle(vec2d, vec2d_other) - 0.96f) > threshold) {
         printf("[ERROR] Failed to calculate angle between 2 vectors: expected to be %f (+-%Lf); got %Lf\n",
             0.96f, threshold, vec2_angle(vec2d, vec2d_other)
         );
@@ -211,9 +212,43 @@ int test_vector() {
     return EXIT_SUCCESS;
 }
 
+int test_misc() {
+    const float num1 = -0.5;
+    if (absf(num1) != 0.5f) {
+        printf("[ERROR] Failed to get absolute value of %f: got %f; expected %f", num1, absf(num1), -num1);
+        return EXIT_FAILURE;
+    }
+
+    const float abs_num1_pow2 = absf(num1) * absf(num1);
+    if (powerf(absf(num1), 2.0f) != abs_num1_pow2) {
+        printf("[ERROR] Failed to get %f to the power of 2: got %f; expected %f", absf(num1), powerf(absf(num1), 2.0f), abs_num1_pow2);
+        return EXIT_FAILURE;
+    }
+
+    const int num2 = 2;
+    const float result = powerf(powerf(powerf((float) num2, 2.0f), 2.0f), 2.0f);
+    if (result != 256.0f) {
+        printf("[ERROR] Failed to get ((%d^2)^2)^2: got %f; expected %d", num2, result, 256);
+        return EXIT_FAILURE;
+    }
+
+    const int num3 = 4;
+    if (sqrootf(num3) != 2.0) {
+        printf("[ERROR] Failed to calculate square root of %d: got %f; expected %d", num3, sqrootf(num3), 2);
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
 int test_math() {
     if (test_vector() == EXIT_FAILURE) {
         printf("[ERROR] Vector test failed\n");
+        return EXIT_FAILURE;
+    }
+
+    if (test_misc() == EXIT_FAILURE) {
+        printf("[ERROR] Misc test failed\n");
         return EXIT_FAILURE;
     }
 

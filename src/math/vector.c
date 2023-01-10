@@ -14,12 +14,12 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 // Calculate vector's length
 long double vec2_len(vec2 vec) {
-    return sqrtl((long double) (vec.x*vec.x) + (long double) (vec.y*vec.y));
+    return sqrootl((long double) (vec.x*vec.x) + (long double) (vec.y*vec.y));
 }
 
 // Calculate vector's length
 long double vec2f_len(vec2f vec) {
-    return sqrtl(vec.x*vec.x + vec.y*vec.y);
+    return sqrootl(vec.x*vec.x + vec.y*vec.y);
 }
 
 // Add 2 vectors together
@@ -54,7 +54,7 @@ long double vec2f_angle(vec2f a, vec2f b) {
 
 // Calculate vector's length
 long double vec3_len(vec3 vec) {
-    return sqrt(
+    return sqrootl(
         (long double) (vec.x*vec.x) + 
         (long double) (vec.y*vec.y) +
         (long double) (vec.z*vec.z)
@@ -63,7 +63,7 @@ long double vec3_len(vec3 vec) {
 
 // Calculate vector's length
 long double vec3f_len(vec3f vec) {
-    return sqrtl(
+    return sqrootl(
         vec.x*vec.x + 
         vec.y*vec.y +
         vec.z*vec.z

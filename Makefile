@@ -17,13 +17,13 @@ lib:
 	ar rcs $(BINDIR)/$(LIBNAME) $(BUILDDIR)/*.o
 
 test:
-	$(CC) $(DEFAULTCCFLAGS) $(TESTDIR)/$(TESTBIN).c $(SRCDIR)/*/*.c -o $(TESTDIR)/$(TESTBIN) -lm && \
+	$(CC) $(DEFAULTCCFLAGS) $(TESTDIR)/$(TESTBIN).c $(SRCDIR)/*/*.c -o $(TESTDIR)/$(TESTBIN) && \
 	 	cd $(TESTDIR) && \
 	 	./$(TESTBIN) && \
 	 	rm $(TESTBIN)
 
 test_static: lib
-	$(CC) $(DEFAULTCCFLAGS) $(TESTDIR)/$(TESTBIN).c $(BINDIR)/$(LIBNAME) -static -lm -o $(TESTDIR)/$(TESTBIN) && \
+	$(CC) $(DEFAULTCCFLAGS) $(TESTDIR)/$(TESTBIN).c $(BINDIR)/$(LIBNAME) -static -o $(TESTDIR)/$(TESTBIN) && \
 	cd $(TESTDIR) && \
 	./$(TESTBIN) && \
 	rm $(TESTBIN)
