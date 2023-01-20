@@ -26,6 +26,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/math/vector.h"
 #include "../src/math/misc.h"
 #include "../src/datastruct/cvec.h"
+#include "../src/strings/levenshtein.h"
 
 int test_rng() {
     lcg(76);
@@ -302,6 +303,29 @@ int test_datastruct() {
     return EXIT_SUCCESS;
 }
 
+int test_levenshtein() {
+    const char* str1 = "Fellow";
+    const char* str2 = "Fella";
+
+    int distance = levenshtein_distance(str1, str2);
+
+    if (distance != 2) {
+        printf("[ERROR] Invalid string distance between \"%s\" and \"%s\": expected to be %d; got %d\n", str1, str2, 2, distance);
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+int test_strings() {
+    if (test_levenshtein() == EXIT_FAILURE) {
+        printf("[ERROR] Levenshtein test failed\n");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
 int main() {
     // rng
     printf("[INFO] Testing rng...\n");
@@ -357,6 +381,14 @@ int main() {
         printf("[INFO] Datastruct test failed\n\n");
     } else {
         printf("[INFO] Datastruct test passed\n\n");
+    }
+
+    // strings
+        printf("[INFO] Testing strings...\n");
+    if (test_strings() == EXIT_FAILURE) {
+        printf("[INFO] Strings test failed\n\n");
+    } else {
+        printf("[INFO] Strings test passed\n\n");
     }
 
     return EXIT_SUCCESS;
