@@ -27,6 +27,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/math/misc.h"
 #include "../src/datastruct/cvec.h"
 #include "../src/strings/levenshtein.h"
+#include "../src/crypt/xorcipher.h"
 
 int test_rng() {
     lcg(76);
@@ -326,6 +327,37 @@ int test_strings() {
     return EXIT_SUCCESS;
 }
 
+int test_xorcipher() {
+    char xored = xor_char('a', 'k');
+    if (xored != ('a' ^ 'k')) {
+        printf("[ERROR] XORing char does not result in XORed char: got %d; expected %d\n", xored, ('a' ^ 'k'));
+        return EXIT_FAILURE;
+    }
+
+    char data[] = "text";
+    unsigned int data_len = (unsigned int) strlen(data);
+    char old_data[] = "text";
+    char key[] = "ключ";
+    unsigned int key_len = (unsigned int) strlen(key);
+    
+    xor_str(data, data_len, key, key_len);
+    if (strcmp(data, old_data) == 0) {
+        printf("[ERROR] Failed to XOR string with key: nothing's changed\n");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+int test_crypt() {
+    if (test_xorcipher() == EXIT_FAILURE) {
+        printf("[ERROR] XORcipher test failed\n");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
 int main() {
     // rng
     printf("[INFO] Testing rng...\n");
@@ -389,6 +421,14 @@ int main() {
         printf("[INFO] Strings test failed\n\n");
     } else {
         printf("[INFO] Strings test passed\n\n");
+    }
+
+    // crypt
+    printf("[INFO] Testing crypt...\n");
+    if (test_crypt() == EXIT_FAILURE) {
+        printf("[INFO] Crypt test failed\n\n");
+    } else {
+        printf("[INFO] Crypt test passed\n\n");
     }
 
     return EXIT_SUCCESS;
