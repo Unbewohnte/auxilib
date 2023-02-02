@@ -39,7 +39,7 @@ void cvec_put(cvec* vec, const void* data) {
     }
 
     if (vec->size == vec->cap) {
-        vec->contents = realloc(vec->contents, vec->cap + vec->data_size);
+        vec->contents = (char*) realloc(vec->contents, vec->cap + vec->data_size);
     }
 
     for (size_t i = 0; i < vec->data_size; i++) {
