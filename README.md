@@ -8,11 +8,15 @@
 # Use
 Either
 
-- Compile the library as a whole separately and use that
+- Build the library as a whole separately and use that
 
 or
 
 - Copy header(s) with implementation file(s) with needed functionality to your project
+
+or
+
+- Copy code from each implementation file of your choosing to your code; it does not cross-depends on other auxilib header files and is self-standing
 
 # License
 Currently auxilib uses MIT license.
