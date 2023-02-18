@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include <stdint.h>
 #include <stdio.h>
 
-#if __WIN32__
+#ifdef _WIN32
 #include<sys/types.h>
 #include<sys/stat.h>
 #define stat _stat
