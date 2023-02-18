@@ -11,8 +11,6 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 */
 
 // Returns an absolute value of n
-#include "misc.h"
-
 char absch(char n) {
     if (n >= 0) {
         return n;
@@ -83,6 +81,12 @@ long double absld(long double n) {
         return -n;
     }
 }
+
+// Returns the approximate result of base^exp
+float powerf(float base, float exp);
+
+// Returns the approximate result of base^exp
+long double powerl(long double base, long double exp);
 
 long double n_root(long double a, unsigned int n, unsigned int max_iter, long double epsilon) {
     if (n == 1 || a == 0) {

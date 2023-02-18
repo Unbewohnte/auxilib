@@ -1,7 +1,7 @@
 /*
 The MIT License (MIT)
 
-Copyright © 2022 Kasyanov Nikolay Alexeyevich (Unbewohnte)
+Copyright © 2022,2023 Kasyanov Nikolay Alexeyevich (Unbewohnte)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -34,10 +34,10 @@ typedef struct ppm_image {
 // Read ppm image from file on the disk. Returns NULL if something went wrong
 ppm_image* read_ppm(const char* path);
 
-// Write ppm image to the disk. Returns 0 if everything is alright, 1 otherwise
+// Write ppm image to the disk. Returns 1 if everything is alright, 0 otherwise
 int write_ppm(const ppm_image* ppm, const char* path);
 
-// Put pixel with specified rgb8 color at x,y coordinates. Returns 0 if pixel has been replaced, 1 if 
+// Put pixel with specified rgb8 color at x,y coordinates. Returns 1 if pixel has been replaced, 0 if 
 // coordinates are out of bounds
 int put_pixel_at(const unsigned int x, const unsigned int y, const rgb8 color, ppm_image* ppm);
 

@@ -44,7 +44,7 @@ int test_ppm() {
         return EXIT_FAILURE;
     }
 
-    if (write_ppm(ppm, "result_image.ppm") != 0) {
+    if (!write_ppm(ppm, "result_image.ppm")) {
         printf("[ERROR] failed to write new ppm image\n");
         return EXIT_FAILURE;
     }
@@ -59,7 +59,7 @@ int test_ppm() {
         }
     }
 
-    if (write_ppm(new_ppm, "result_image.ppm") != 0) {
+    if (!write_ppm(new_ppm, "result_image.ppm")) {
         printf("[ERROR] failed to write new changed ppm image\n");
         return EXIT_FAILURE;
     }
@@ -130,9 +130,20 @@ int test_fs() {
         printf("[ERROR] Failed to determine file size of test ppm image\n");
         return EXIT_FAILURE;
     }
+    uint64_t fsize_stat = file_size("test_img512x512.ppm");
+    uint64_t fsize_brute = file_size_brute("test_img512x512.ppm"); 
+    if (fsize_brute != fsize_stat) {
+        printf("[ERROR] File size functions returned different sizes on the same file: (brute - stat) (%ld - %ld)\n", fsize_brute, fsize_stat);
+        return EXIT_FAILURE;
+    }
 
     if (copy_file("test_img512x512.ppm", "copied_ppm_file.ppm") == -1) {
         printf("[ERROR] Failed to copy test ppm image\n");
+        return EXIT_FAILURE;
+    }
+
+    if (!can_open_file("test_img512x512.ppm")) {
+        printf("[ERROR] Failed to open test_img512x512.ppm, which must exist\n");
         return EXIT_FAILURE;
     }
 
