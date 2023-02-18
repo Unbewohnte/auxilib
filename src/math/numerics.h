@@ -45,3 +45,9 @@ float sqrootf(float n);
 
 // Returns the approximate result of square root of n
 float sqrootl(long double n);
+
+// Returns the ceiling of n (smallest integral value not less than n)
+double ceild(double n);
+
+// Returns the floor of n (largest integral value not greater than n)
+double floord(double n);

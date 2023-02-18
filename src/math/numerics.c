@@ -182,3 +182,29 @@ float sqrootf(float n) {
 float sqrootl(long double n) {
     return powerl(n, 0.5);
 }
+
+// Returns the ceiling of n (smallest integral value not less than n)
+double ceild(double n) {
+    if (n >= 0) {
+        if (n - ((long) n) > 0.0f) {
+            return (double) (((long) n) + 1);
+        } else {
+            return (double) ((long) n);
+        }
+    } else {
+        return (double) ((long) n);
+    }
+}
+
+// Returns the floor of n (largest integral value not greater than n)
+double floord(double n) {
+    if (n >= 0) {
+        return (double) ((long) n);
+    } else {
+        if ((double) ((long) n) != n) {
+            return (double) ((long) n - 1);
+        } else {
+            return n;
+        }
+    }
+}

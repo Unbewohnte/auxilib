@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include <time.h>
 #include <assert.h>
 #include <stdint.h>
+#include <math.h>
 #include <stddef.h>
 
 #include "../src/rng/rng.h"
@@ -24,7 +25,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/fs/fs.h"
 #include "../src/bits/bits.h"
 #include "../src/math/vector.h"
-#include "../src/math/misc.h"
+#include "../src/math/numerics.h"
 #include "../src/datastruct/cvec.h"
 #include "../src/strings/levenshtein.h"
 #include "../src/crypt/xorcipher.h"
@@ -225,7 +226,7 @@ int test_vector() {
     return EXIT_SUCCESS;
 }
 
-int test_misc() {
+int test_numerics() {
     const float num1 = -0.5;
     if (absf(num1) != 0.5f) {
         printf("[ERROR] Failed to get absolute value of %f: got %f; expected %f", num1, absf(num1), -num1);
@@ -247,7 +248,50 @@ int test_misc() {
 
     const int num3 = 4;
     if (sqrootf(num3) != 2.0) {
-        printf("[ERROR] Failed to calculate square root of %d: got %f; expected %d", num3, sqrootf(num3), 2);
+        printf("[ERROR] Failed to calculate square root of %d: got %f; expected %d\n", num3, sqrootf(num3), 2);
+        return EXIT_FAILURE;
+    }
+
+    const double pn = 6.4f;
+    if (ceild(pn) != 7.0f) {
+        printf("[ERROR] ceild returned %f on %f instead of %f\n", ceild(pn), pn, 7.0f);
+        return EXIT_FAILURE;
+    }
+
+    if (ceil(pn) != ceild(pn)) {
+        printf("[ERROR] ceild result on %f does not match std's ceil: %f != %f\n", pn, ceild(pn), ceil(pn));
+        return EXIT_FAILURE;
+    }
+
+    const double pn2 = 3.0f;
+    if (ceild(pn2) != 3.0f) {
+        printf("[ERROR] ceild result on %f does not match std's ceil: %f != %f\n", pn2, ceild(pn), ceil(pn));
+        return EXIT_FAILURE;
+    }
+
+    const double pn3 = -2.6f;
+    if (ceil(pn3) != ceild(pn3)) {
+        printf("[ERROR] ceild result on %f does not match std's ceil: %f != %f\n", pn3, ceild(pn), ceil(pn));
+        return EXIT_FAILURE;
+    }
+
+    if (floord(pn) != 6.0f) {
+        printf("[ERROR] floord returned %f on %f: expected to be %f\n", floord(pn), pn, 6.0f);
+        return EXIT_FAILURE;
+    }
+
+    if (floord(pn2) != 3.0f) {
+        printf("[ERROR] floord returned %f on %f: expected to be %f\n", floord(pn2), pn2, 3.0f);
+        return EXIT_FAILURE;
+    }
+
+    if (floord(pn3) != -3.0f) {
+        printf("[ERROR] floord returned %f on %f: expected to be %f\n", floord(pn3), pn3, -3.0f);
+        return EXIT_FAILURE;
+    }
+
+    if (floord(pn3) != floor(pn3)) {
+        printf("[ERROR] floord's result on %f is different from std's floor: %f != %f\n", pn3, floord(pn3), floor(pn3));
         return EXIT_FAILURE;
     }
 
@@ -260,8 +304,8 @@ int test_math() {
         return EXIT_FAILURE;
     }
 
-    if (test_misc() == EXIT_FAILURE) {
-        printf("[ERROR] Misc test failed\n");
+    if (test_numerics() == EXIT_FAILURE) {
+        printf("[ERROR] Numerics test failed\n");
         return EXIT_FAILURE;
     }
 
