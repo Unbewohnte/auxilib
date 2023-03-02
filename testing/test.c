@@ -28,6 +28,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/math/numerics.h"
 #include "../src/datastruct/cvec.h"
 #include "../src/strings/levenshtein.h"
+#include "../src/strings/auxistr.h"
 #include "../src/crypt/xorcipher.h"
 
 int test_rng() {
@@ -373,9 +374,48 @@ int test_levenshtein() {
     return EXIT_SUCCESS;
 }
 
+int test_auxistr() {
+    const char* ascii_text = "There are 38 characters in this string";
+    if (strlength(ascii_text) != 38) {
+        printf("[ERROR] A text with 38 characters was determined to be of length %ld\n", strlength(ascii_text));
+        return EXIT_FAILURE;
+    }
+    const char* other_ascii_text = "..-.";
+    
+    if (streq(ascii_text, other_ascii_text)) {
+        printf("[ERROR] \"%s\" was determined to be equal to \"%s\"\n", ascii_text, other_ascii_text);
+        return EXIT_FAILURE;
+    }
+
+    const char* first = "日本語";
+    const char* second = "текст"; 
+    const char* second_copy = "текст";
+    
+    if (!streq(second, second_copy)) {
+        printf("[ERROR] \"%s\" was determined to be different from \"%s\"\n", second, second_copy);
+        return EXIT_FAILURE;
+    }
+
+    char* concatenated = strconcat(first, second);
+    if (!streq(concatenated, "日本語текст")) {
+        printf("[ERROR] \"%s\" was not concatenated correctly into \"%s\"\n", concatenated, "日本語текст");
+        free(concatenated);
+        return EXIT_FAILURE;
+    }
+    free(concatenated);
+
+
+    return EXIT_SUCCESS;
+}
+
 int test_strings() {
     if (test_levenshtein() == EXIT_FAILURE) {
         printf("[ERROR] Levenshtein test failed\n");
+        return EXIT_FAILURE;
+    }
+
+    if (test_auxistr() == EXIT_FAILURE) {
+        printf("[ERROR] Auxistr test failed\n");
         return EXIT_FAILURE;
     }
 
