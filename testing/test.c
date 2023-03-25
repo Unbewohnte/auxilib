@@ -30,6 +30,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/strings/levenshtein.h"
 #include "../src/strings/auxistr.h"
 #include "../src/crypt/xorcipher.h"
+#include "../src/fs/libpath.h"
 
 int test_rng() {
     lcg(76);
@@ -127,7 +128,7 @@ int test_endian() {
     return EXIT_SUCCESS;
 }
 
-int test_fs() {
+int test_fs_fs() {
     if (file_size("test_img512x512.ppm") == UINT64_MAX) {
         printf("[ERROR] Failed to determine file size of test ppm image\n");
         return EXIT_FAILURE;
@@ -146,6 +147,44 @@ int test_fs() {
 
     if (!can_open_file("test_img512x512.ppm")) {
         printf("[ERROR] Failed to open test_img512x512.ppm, which must exist\n");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+int test_libpath() {
+    char* path = path_join(2, ".////", "//test_nonexistent_file.txt");
+    if (strcmp(path, "./test_nonexistent_file.txt") != 0) {
+        printf("[ERROR] Expected path to be %s; got %s\n", "./test_nonexistent_file.txt", path);
+        path_free(&path);
+        return EXIT_FAILURE;
+    }
+
+    char* parent = path_parent(path);
+    if (strcmp(parent, "./") != 0 && strcmp(parent, ".") != 0) {
+        printf("[ERROR] Failed to find path's parent: got %s; expected %s\n", parent, ".");
+        path_free(&path);
+        return EXIT_FAILURE;
+    }
+
+    path_free(&path);
+    if (path != NULL) {
+        printf("[ERROR] Free'd path memory still has a pointer to it: %p\n", path);
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
+int test_fs() {
+    if (test_fs_fs() == EXIT_FAILURE) {
+        printf("[ERROR] FS test failed\n");
+        return EXIT_FAILURE;
+    }
+
+    if (test_libpath() == EXIT_FAILURE) {
+        printf("[ERROR] Libpath test failed\n");
         return EXIT_FAILURE;
     }
 
