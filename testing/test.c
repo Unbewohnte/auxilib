@@ -161,12 +161,13 @@ int test_libpath() {
         return EXIT_FAILURE;
     }
 
-    char* parent = path_parent(path);
+    char* parent = path_parent_copy(path);
     if (strcmp(parent, "./") != 0 && strcmp(parent, ".") != 0) {
         printf("[ERROR] Failed to find path's parent: got %s; expected %s\n", parent, ".");
         path_free(&path);
         return EXIT_FAILURE;
     }
+    path_free(&parent);
 
     path_free(&path);
     if (path != NULL) {

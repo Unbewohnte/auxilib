@@ -133,12 +133,12 @@ void path_free(char** path) {
 Creates a new path pointing to the parent.
 Be sure to path_free() on the base as well after use.
 */
-char* path_parent(const char* path) {
+char* path_parent_copy(const char* path) {
     if (!path) {
         return NULL;
     }
 
-    char* base_path = NULL;
+    char* parent_path = NULL;
     char* clean_path = NULL;
     size_t path_len;
     size_t last_separator_index = 0;
@@ -160,18 +160,73 @@ char* path_parent(const char* path) {
         }
     }
 
+    if (last_separator_index == 0) {
+        return clean_path;
+    }
+
     // allocate memory to hold up to last separator bytes
-    base_path = malloc(sizeof(char) * last_separator_index);
-    if (!base_path) {
+    parent_path = malloc(sizeof(char) * last_separator_index);
+    if (!parent_path) {
         return NULL;
     }
 
     // copy over
-    memcpy(base_path, clean_path, sizeof(char) * last_separator_index);
-    base_path[last_separator_index] = '\0';
+    memcpy(parent_path, clean_path, sizeof(char) * last_separator_index);
+    parent_path[last_separator_index] = '\0';
 
     // free temporary cleaned path
     path_free(&clean_path);
 
-    return base_path;
+    return parent_path;
+}
+
+/*
+Shrinks given path so that it points to the parent.
+Reallocates memory.
+*/
+void path_parent(char* path) {
+    if (!path) {
+        return;
+    }
+    
+    path_clean(path);
+
+    size_t path_len = strlen(path);
+    size_t last_separator_index = 0;
+
+    // find the last separator index
+    for (size_t i = 0; i < path_len; i++) {
+        if (path[i] == PATH_SEPARATOR) {
+            last_separator_index = i;
+        }
+    }
+
+    if (last_separator_index == 0) {
+        return;
+    }
+
+    path = realloc(path, sizeof(char) * last_separator_index);
+    path[last_separator_index] = '\0';
+}
+
+/*
+Swaps Windows' path separators (\) in given path with
+POSIX path separators (/) if compiled for POSIX systems
+and the other way around. Calls path_clean on the resulting
+path 
+*/
+void path_to_native_separators(char* path) {
+    if (!path) {
+        return;
+    }
+
+    size_t path_len = strlen(path);
+
+    for (size_t i = 0; i < path_len; i++) {
+        if (path[i] == '\\' || path[i] == '/') {
+            path[i] = PATH_SEPARATOR;
+        }
+    }
+
+    path_clean(path);
 }

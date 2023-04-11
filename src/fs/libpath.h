@@ -38,4 +38,18 @@ void path_free(char** path);
 Creates a new path pointing to the parent.
 Be sure to path_free() on the base as well after use.
 */
-char* path_parent(const char* path);
+char* path_parent_copy(const char* path);
+
+/*
+Shrinks given path so that it points to the parent.
+Reallocates memory.
+*/
+void path_parent(char* path);
+
+/*
+Swaps Windows' path separators (\) in given path with
+POSIX path separators (/) if compiled for POSIX systems
+and the other way around. Calls path_clean on the resulting
+path 
+*/
+void path_to_native_separators(char* path);
