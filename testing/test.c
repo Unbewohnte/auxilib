@@ -31,6 +31,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 #include "../src/strings/auxistr.h"
 #include "../src/crypt/xorcipher.h"
 #include "../src/fs/libpath.h"
+#include "../src/terminal/ansicolors.h"
 
 int test_rng() {
     lcg(76);
@@ -493,6 +494,26 @@ int test_crypt() {
     return EXIT_SUCCESS;
 }
 
+int test_ansicolors() {
+    printf(
+        "%s\n", 
+        ANSIC_BOLD ANSIC_UNDERLINE ANSIC_FG_RGB(52, 20, 80) "YOU" 
+        ANSIC_END ANSIC_ITALIC " tell me"
+        ANSIC_END ANSIC_RAPIDBLINK ANSIC_BG_RGB(200, 140, 80) " whether it works"
+        ANSIC_END ANSIC_BG_RGB(50, 0, 0) " or not!" ANSIC_END);
+
+    return EXIT_SUCCESS;
+}
+
+int test_terminal() {
+    if (test_ansicolors() == EXIT_FAILURE) {
+        printf("[ERROR] ANSI colors test failed\n");
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
+}
+
 int main() {
     // rng
     printf("[INFO] Testing rng...\n");
@@ -564,6 +585,14 @@ int main() {
         printf("[INFO] Crypt test failed\n\n");
     } else {
         printf("[INFO] Crypt test passed\n\n");
+    }
+
+    // terminal
+    printf("[INFO] Testing terminal...\n");
+    if (test_terminal() == EXIT_FAILURE) {
+        printf("[INFO] Terminal test failed\n\n");
+    } else {
+        printf("[INFO] Terminal test passed\n\n");
     }
 
     return EXIT_SUCCESS;
